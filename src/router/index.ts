@@ -1,11 +1,20 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import Layout from '@/layout/index.vue';
 import Home from '../views/Home.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'Home',
-    component: Home,
+    component: Layout,
+    children: [
+      {
+        path: '/',
+        component: Home,
+        meta: {
+          title: '首页',
+        },
+      },
+    ],
   },
 ];
 

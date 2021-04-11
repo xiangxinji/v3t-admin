@@ -1,0 +1,21 @@
+
+$body-font-size : 14px ;
+
+
+// layout
+$layout-header-height:50px;
+$layout-header-background :  #1E1E1E;
+$layout-header-border: 1px solid #1E1E1E;
+$layout-aside-width : 170px;
+$layout-header-logo-width :$layout-aside-width;
+$layout-logo-close-width : 65px;
+$layout-main-height: calc(100vh - #{$layout-header-height});
+
+:export {
+  layoutHeaderHeight : $layout-header-height ;
+  layoutAsideWidth : $layout-aside-width ;
+  layoutMainHeight : $layout-main-height ;
+  layoutLogoWidth : $layout-header-logo-width;
+  layoutLogoCloseWidth : $layout-logo-close-width;
+}
+
