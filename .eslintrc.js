@@ -18,7 +18,9 @@ module.exports = {
     'global-require': 'off',
     '@typescript-eslint/no-var-requires': 'off',
     'no-mixed-operators' : 'off',
-    '@typescript-eslint/ban-types' : 'off'
+    '@typescript-eslint/ban-types' : 'off',
+    'max-len' : [2 , 200] ,
+    'no-useless-return' : 'off'
   },
   overrides: [
     {

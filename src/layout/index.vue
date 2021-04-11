@@ -8,6 +8,7 @@
         <aside-bar :fold="fold" />
       </el-aside>
       <el-main :style="{height: ElementStyles['MainHeight']}">
+        <nav-tag />
         <app-main />
       </el-main>
     </el-container>
@@ -15,7 +16,9 @@
 </template>
 <script>
 import { defineComponent } from 'vue';
-import { AsideBar, NavBar, AppMain } from './components';
+import {
+  AsideBar, NavBar, AppMain, NavTag,
+} from './components';
 import { getLayoutStyles, useFolder } from './utils';
 
 const r = getLayoutStyles();
@@ -27,6 +30,7 @@ export default defineComponent({
     AsideBar,
     NavBar,
     AppMain,
+    NavTag,
   },
   setup() {
     const { fold, toggleFolder } = useFolder();

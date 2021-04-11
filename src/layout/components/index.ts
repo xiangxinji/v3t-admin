@@ -8,3 +8,6 @@ export {
 export {
   default as NavBar,
 } from './NavBar/index.vue';
+export {
+  default as NavTag,
+} from './NavTag/index.vue';

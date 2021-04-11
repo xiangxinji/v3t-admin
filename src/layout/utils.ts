@@ -1,7 +1,6 @@
 import { RouteLocationNormalizedLoaded } from 'vue-router';
 import { computed, ComputedRef } from 'vue';
 import { useStore } from 'vuex';
-
 import variables from '../assets/styles/_variables.scss';
 
 export type BreadCrumbConfig = {
