@@ -1,9 +1,9 @@
 <template>
   <div class="nav-tag">
     <div class="tagger-container" ref="scrollRef">
-          <div :class="{'tag-item' : true , 'active' : state.currentIndex === i}" v-for="i in 20" :key="i" @click="handleActiveTag($event , i )">
+          <div :class="{'tag-item' : true , 'active' : state.currentIndex === i}" v-for="i in 40" :key="i" @click="handleActiveTag($event , i )">
             系统管理 + {{ i }}
-            <span class="close">
+            <span class="close" @click="handleCloseTag">
              <i class="el-icon-close"></i>
             </span>
           </div>
@@ -12,21 +12,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive } from 'vue';
+import { defineComponent } from 'vue';
+import { createActiveFunc, createState, createCloseFunc } from './utils';
 
 export default defineComponent({
   setup() {
-    const state = reactive({
-      currentIndex: 1,
-    });
-    const scrollRef = ref<Element | null>(null);
-    const handleActiveTag = (event : Event, i:number) :void => {
-      state.currentIndex = i;
-      if (scrollRef.value === null) return;
-    };
+    const { state, scrollRef } = createState();
     return {
       state,
-      handleActiveTag,
+      handleActiveTag: createActiveFunc(scrollRef, state),
+      handleCloseTag: createCloseFunc(),
       scrollRef,
     };
   },

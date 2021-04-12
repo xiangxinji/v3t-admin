@@ -20,7 +20,8 @@ module.exports = {
     'no-mixed-operators' : 'off',
     '@typescript-eslint/ban-types' : 'off',
     'max-len' : [2 , 200] ,
-    'no-useless-return' : 'off'
+    'no-useless-return' : 'off',
+    '@typescript-eslint/explicit-module-boundary-types' : 'off'
   },
   overrides: [
     {
