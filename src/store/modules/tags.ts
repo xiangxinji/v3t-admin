@@ -15,6 +15,9 @@ const options : Module< StateType, RootState> = {
     CLEAR_TAGS(s:StateType) {
       s.tags = [];
     },
+    REMOVE_TAG(s, tagPath : string) {
+      s.tags = s.tags.filter((tag) => tag.path !== tagPath);
+    },
   },
   namespaced: true,
 };

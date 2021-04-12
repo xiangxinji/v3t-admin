@@ -1,9 +1,9 @@
 <template>
   <div class="nav-tag">
     <div class="tagger-container" ref="scrollRef">
-          <div :class="{'tag-item' : true , 'active' : state.currentIndex === ind}" v-for="(i,ind) in tags" :key="i.path" @click="handleActiveTag($event , i )">
+          <div :class="{'tag-item' : true , 'active' : state.currentPath === i.path }" v-for="(i,ind) in tags" :key="i.path" @click="handleActiveTag($event , i )">
             {{ i.name }}
-            <span class="close" @click="handleCloseTag" v-if="getCloseState(i.path)">
+            <span class="close" @click.stop="closeTagHandler(i , ind )" v-if="getCloseState(i.path)">
              <i class="el-icon-close"></i>
             </span>
           </div>
@@ -13,10 +13,10 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import {
-  createActiveFunc, createState, createCloseFunc, useWatchRoute,
+  createActiveFunc, createState, useWatchRoute, useNavTag,
 } from './utils';
 
 export default defineComponent({
@@ -24,13 +24,15 @@ export default defineComponent({
     const { state, scrollRef } = createState();
     const route = useRoute();
     const store = useStore();
-    const { getCloseState } = useWatchRoute(route, store, state);
+    const router = useRouter();
+    useWatchRoute(route, store, state, router);
+    const { getCloseState, closeTagHandler, tags } = useNavTag(state, store, router);
     return {
       state,
-      handleActiveTag: createActiveFunc(scrollRef, state),
-      handleCloseTag: createCloseFunc(),
+      handleActiveTag: createActiveFunc(scrollRef, state, store, router),
       scrollRef,
-      tags: store.getters.tags,
+      tags,
+      closeTagHandler,
       getCloseState,
     };
   },
