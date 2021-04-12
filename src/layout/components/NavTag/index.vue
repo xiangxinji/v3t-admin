@@ -1,9 +1,9 @@
 <template>
   <div class="nav-tag">
     <div class="tagger-container" ref="scrollRef">
-          <div :class="{'tag-item' : true , 'active' : state.currentIndex === i}" v-for="i in 40" :key="i" @click="handleActiveTag($event , i )">
-            系统管理 + {{ i }}
-            <span class="close" @click="handleCloseTag">
+          <div :class="{'tag-item' : true , 'active' : state.currentIndex === ind}" v-for="(i,ind) in tags" :key="i.path" @click="handleActiveTag($event , i )">
+            {{ i.name }}
+            <span class="close" @click="handleCloseTag" v-if="getCloseState(i.path)">
              <i class="el-icon-close"></i>
             </span>
           </div>
@@ -13,16 +13,25 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { createActiveFunc, createState, createCloseFunc } from './utils';
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
+import {
+  createActiveFunc, createState, createCloseFunc, useWatchRoute,
+} from './utils';
 
 export default defineComponent({
   setup() {
     const { state, scrollRef } = createState();
+    const route = useRoute();
+    const store = useStore();
+    const { getCloseState } = useWatchRoute(route, store, state);
     return {
       state,
       handleActiveTag: createActiveFunc(scrollRef, state),
       handleCloseTag: createCloseFunc(),
       scrollRef,
+      tags: store.getters.tags,
+      getCloseState,
     };
   },
 });
@@ -43,6 +52,8 @@ export default defineComponent({
   } @else {
     user-select:none;
     cursor: pointer;
+    min-width:50px;
+    text-align: center;
     padding:4px 4px;
     border: 1px solid $secondary-theme;
     display:inline-block;

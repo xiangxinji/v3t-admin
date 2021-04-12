@@ -15,3 +15,10 @@ declare type RootState = {
   user ?: any;
   common ?: any
 }
+
+declare type Tagger = {
+  name : string
+  path : string
+  cache : boolean
+  close : boolean
+}

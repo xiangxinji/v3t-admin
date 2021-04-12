@@ -13,7 +13,7 @@ const routes: Array<RouteRecordRaw> = [
         path: '/',
         component: Home,
         meta: {
-          title: '首页',
+          title: '这是一个比较牛牛牛的首页',
         },
       },
     ],

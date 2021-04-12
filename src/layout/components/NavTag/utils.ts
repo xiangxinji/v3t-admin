@@ -1,7 +1,9 @@
 /* eslint-disable no-param-reassign */
 import {
-  Ref, ref, reactive,
+  Ref, ref, reactive, watch, computed,
 } from 'vue';
+import { RouteLocationNormalizedLoaded } from 'vue-router';
+import { AppStore } from '@/store';
 
 export function createState() {
   const state = reactive({
@@ -10,6 +12,36 @@ export function createState() {
   const scrollRef = ref<HTMLElement | null>(null);
   return {
     state, scrollRef,
+  };
+}
+
+function createTagger(name : string, path : string) :Tagger {
+  return {
+    name, path, cache: true, close: true,
+  };
+}
+
+export function useWatchRoute(route: RouteLocationNormalizedLoaded, store : AppStore, state : { currentIndex : number }) {
+  watch(route, () => {
+    const path = route.fullPath;
+    const name = route.meta.title as string;
+    if (!name) return;
+    const taggers = store.getters.tags;
+    if (!taggers.some((i : Tagger) => i.path === path)) store.commit('tags/ADD_TAG', createTagger(name, path));
+  }, { immediate: true });
+
+  watch(store.getters.tags, () => {
+    (store.getters.tags as Array<Tagger>).forEach((item, ind) => {
+      if (route.path === item.path) state.currentIndex = ind;
+    });
+  }, { immediate: true });
+  const getCloseState = (path : string) => {
+    if (store.getters.tags.length < 2) return false;
+    const current = (store.getters.tags as Array<Tagger>).find((item) => path === item.path);
+    return current ? current.close : false;
+  };
+  return {
+    getCloseState,
   };
 }
 
