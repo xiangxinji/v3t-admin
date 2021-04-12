@@ -1,10 +1,9 @@
 import { UserFormData } from '@/types/user';
-import { Store } from 'vuex';
-import { ModulesType } from '@/store';
 import { ElMessage } from 'element-plus';
-import { Router, useRouter } from 'vue-router';
+import { Router } from 'vue-router';
+import { AppStore } from '@/store';
 
-export function createLoginSubmit(store:Store<ModulesType>, formData : UserFormData, router : Router) {
+export function createLoginSubmit(store: AppStore, formData : UserFormData, router : Router) {
   return () => {
     const pedding = store.dispatch('user/login', formData);
     pedding.then(() => {

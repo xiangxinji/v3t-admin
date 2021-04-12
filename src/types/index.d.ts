@@ -12,5 +12,6 @@ declare type ResponseContent <T> = {
 }
 
 declare type RootState = {
-
+  user ?: any;
+  common ?: any
 }

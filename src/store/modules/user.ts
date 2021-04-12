@@ -1,15 +1,15 @@
 import { UserFormData, UserInfoData } from '@/types/user';
-import { ActionContext } from 'vuex';
+import { ActionContext, Module } from 'vuex';
 import { login as logIn } from '@/api/user';
 
-type StateType = {
+export type StateType = {
   user ?: UserInfoData
 }
 const state :StateType = {
   user: undefined,
 };
 
-export default {
+const options : Module<StateType, RootState> = {
   state,
   mutations: {
     SET_USER_INFO(s : StateType, userInfo : UserInfoData) {
@@ -28,3 +28,5 @@ export default {
   },
   namespaced: true,
 };
+
+export default options;
