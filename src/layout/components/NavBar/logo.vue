@@ -13,9 +13,6 @@ import { useFolder } from '@/layout/utils';
 
 export default defineComponent({
   inject: ['layoutStyles'],
-  created() {
-    console.log(this);
-  },
   setup() {
     const title = settings.appTitle;
     const { fold } = useFolder();

@@ -1,8 +1,10 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import Layout from '@/layout/index.vue';
+import constantsRouters from './constants';
 import Home from '../views/Home.vue';
 
 const routes: Array<RouteRecordRaw> = [
+  ...constantsRouters,
   {
     path: '/',
     component: Layout,

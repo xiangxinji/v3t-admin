@@ -21,7 +21,9 @@ module.exports = {
     '@typescript-eslint/ban-types' : 'off',
     'max-len' : [2 , 200] ,
     'no-useless-return' : 'off',
-    '@typescript-eslint/explicit-module-boundary-types' : 'off'
+    '@typescript-eslint/explicit-module-boundary-types' : 'off',
+    'import/prefer-default-export' : 'off',
+    'no-param-reassign' : 'off'
   },
   overrides: [
     {
