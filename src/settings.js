@@ -1,4 +1,5 @@
 
 module.exports = {
-  appTitle : 'V3T manager'
+  appTitle : 'V3T manager',
+  routerWhiteList : []
 }

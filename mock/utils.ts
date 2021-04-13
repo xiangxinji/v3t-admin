@@ -1,15 +1,15 @@
 /* eslint-disable no-underscore-dangle */
-const responseBody = {
-  message: '',
-  timestamp: 0,
-  result: null,
-  code: 0,
-  _status: 0,
-  _headers: {},
-};
 
 // eslint-disable-next-line import/prefer-default-export
 export const builder = (data : any, message : string, code = 0, headers = {}) => {
+  const responseBody = {
+    message: '',
+    timestamp: 0,
+    result: null,
+    code: 0,
+    _status: 0,
+    _headers: {},
+  };
   responseBody.result = data;
   if (message !== undefined && message !== null) {
     responseBody.message = message;

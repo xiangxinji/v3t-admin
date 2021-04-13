@@ -1,8 +1,12 @@
-import Login from '@/views/User/login.vue';
-
 export default [
   {
     path: '/login',
-    component: Login,
+    component: () => import('@/views/User/login.vue'),
+  },
+  {
+    path: '/exception/404',
+    component: () => import('@/views/Exception/404.vue'),
   },
 ];
+
+export const noFindRoute = { path: '/:pathMatch(.*)*', redirect: '/exception/404' };

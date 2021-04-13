@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { getToken } from '@/utils/token';
 
 const baseURL = process.env.VUE_APP_BASE_API;
 const service = axios.create({
@@ -10,7 +11,11 @@ const service = axios.create({
   },
 });
 service.interceptors.request.use(
-  (config) => config,
+  (config) => {
+    const token = getToken();
+    if (token) config.headers.Authorization = token;
+    return config;
+  },
   (error) => Promise.reject(error),
 );
 service.interceptors.response.use(

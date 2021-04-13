@@ -1,15 +1,15 @@
 import Mock from 'mockjs';
 import { builder } from '../utils';
 
-const prefix = 'config';
+const prefix = 'system';
 const routerConfig:Array<any> = [
   {
     path: '/',
-    component: 'layout',
+    component: 'Layout',
     children: [
       {
         path: '/',
-        component: '@/views/Home.vue',
+        component: '/Home',
         meta: {
           title: '首页',
         },
@@ -18,17 +18,17 @@ const routerConfig:Array<any> = [
   },
   {
     path: '/about',
-    component: 'layout',
+    component: 'Layout',
     children: [
       {
-        path: '/',
-        component: '@/views/About/index.vue',
+        path: '/about',
+        component: '/About/index',
         meta: {
-          title: '关于我们',
+          title: '关于',
         },
       },
     ],
   },
 ];
 
-Mock.mock(`/${prefix}/build`, 'get', builder(routerConfig, '请求成功'));
+Mock.mock(`/${prefix}/build`, 'post', builder(routerConfig, '请求成功'));

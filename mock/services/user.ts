@@ -10,6 +10,7 @@ const userInfo = {
   roles: [
     'admin',
   ],
+  token: '19c219al312309fv7j120-128',
 };
-Mock.mock(`/${prefix}/info`, 'get', builder(userInfo, '请求成功'));
 Mock.mock(`/${prefix}/login`, 'post', builder(userInfo, '登录成功'));
+Mock.mock(`/${prefix}/info`, 'get', builder(userInfo, '获取成功'));
