@@ -1,83 +1,113 @@
 /* eslint-disable no-param-reassign */
 import {
-  Ref, ref, reactive, watch, computed,
+  Ref, ref, reactive, watch, computed, ComputedRef,
 } from 'vue';
 import { RouteLocationNormalizedLoaded, Router } from 'vue-router';
 import { AppStore } from '@/store';
 
 export type StateType = {
-  currentPath : string
+  currentPath: string
 }
+export type UseNavTagParams = {
+  state : StateType,
+  store: AppStore,
+  router: Router,
+  route: RouteLocationNormalizedLoaded,
+  tags : ComputedRef<Array<Tagger>>
+}
+
 export function createState() {
   const state = reactive<StateType>({
     currentPath: '',
   });
-  const scrollRef = ref<HTMLElement | null>(null);
   return {
-    state, scrollRef,
+    state,
   };
 }
 
-function createTagger(name : string, path : string) :Tagger {
+// 创建一个 tagger
+function createTagger(name: string, path: string, cache = true, close = true): Tagger {
   return {
-    name, path, cache: true, close: true,
+    name,
+    path,
+    cache,
+    close,
   };
 }
 
-function getTag(taggers : Array<Tagger>, path : string) {
-  for (let i = 0; i < taggers.length; i++) {
-    if (taggers[i].path === path) return taggers[i];
-  }
-  return null;
+// 创建激活tag 方法, 首先先会进行边界判断, 如果点击了边界区域 会进行自动滚动
+// 进行路由跳转
+export function createActiveFunc(state: StateType, store: AppStore, router: Router) {
+  return function handlerActiveTag(event: Event, tagger: Tagger): void {
+    if (tagger.path === state.currentPath) {
+      return;
+    }
+    const target = (event.target as HTMLElement);
+    const parentNode = target.parentNode as HTMLElement;
+    const rect = parentNode.getBoundingClientRect();
+    const scope = {
+      left: parentNode.scrollLeft,
+      right: parentNode.scrollLeft + rect.width,
+      width: rect.width,
+    };
+    const scopeValue = target.clientWidth * 2;
+    const l = target.offsetLeft + target.clientWidth;
+    if (l > scope.left && l > scope.right - scopeValue) {
+      parentNode.scrollLeft += scope.width - (scope.width - scopeValue);
+    } else if (l > scope.left && l < scope.left + scopeValue) {
+      parentNode.scrollLeft -= scope.width - (scope.width - scopeValue);
+    }
+    parentNode.scrollLeft = parentNode.scrollLeft < 0 ? 0 : parentNode.scrollLeft;
+    router.replace(tagger.path);
+  };
 }
 
-export function useNavTag(state : StateType, store : AppStore, router : Router) {
-  const tags = computed<Array<Tagger>>(() => store.getters.tags);
-  const getCloseState = (path : string) => {
-    if (store.getters.tags.length < 2) return false;
-    const current = tags.value.find((item) => path === item.path);
+// 创建 能否关闭此标签的状态方法, 返回这个 tag.close || false
+export function createGetCloseState(tags: Array<Tagger>) {
+  return function getCloseState(path: string) {
+    const current = tags.find((item) => path === item.path);
     return current ? current.close : false;
   };
-  const closeTagHandler = (closeTag : Tagger) => {
+}
+
+// 创建 关闭方法, 同步到 store.state.tags.tags
+export function createCloseTagHandler(state: StateType, tags: Array<Tagger>, store: AppStore, router: Router) {
+  return function closeTagHandler(closeTag: Tagger) {
     if (closeTag.path === state.currentPath) {
-      let i = tags.value.findIndex((tag) => tag.path === state.currentPath) - 1;
+      let i = tags.findIndex((tag) => tag.path === state.currentPath) - 1;
+      store.commit('tags/REMOVE_TAG', closeTag.path);
       if (i < 0) i = 0;
-      router.replace(tags.value[i].path);
-    }
-    store.commit('tags/REMOVE_TAG', closeTag.path);
-  };
-  return {
-    getCloseState,
-    closeTagHandler,
-    tags,
+      router.replace(store.state.tags.tags[i].path);
+    } else store.commit('tags/REMOVE_TAG', closeTag.path);
   };
 }
 
-export function useWatchRoute(route: RouteLocationNormalizedLoaded, store : AppStore, state :StateType, router : Router) {
+// 监听路由变化并同步 state.cuurentPath
+export function useWatchRoute(route: RouteLocationNormalizedLoaded, store: AppStore, state: StateType) {
   watch(route, () => {
     const path = route.fullPath;
     const name = route.meta.title as string;
     if (!name) return;
     const taggers = store.getters.tags;
     state.currentPath = route.path;
-    if (!taggers.some((i : Tagger) => i.path === path)) store.commit('tags/ADD_TAG', createTagger(name, path));
+    if (!taggers.some((i: Tagger) => i.path === path)) store.commit('tags/ADD_TAG', createTagger(name, path));
   }, { immediate: true });
 }
 
-export function createActiveFunc(scrollRef : Ref<HTMLElement | null>, state : StateType, store : AppStore, router : Router) {
-  return function handlerActiveTag(event : Event, tagger : Tagger) : void {
-    if (scrollRef.value === null || tagger.path === state.currentPath) return;
-    const rect = scrollRef.value.getBoundingClientRect();
-    const target = (event.target as HTMLElement);
-    const scope = { left: scrollRef.value.scrollLeft, right: scrollRef.value.scrollLeft + rect.width, width: rect.width };
-    const scopeValue = target.clientWidth * 2;
-    const l = target.offsetLeft + target.clientWidth;
-    if (l > scope.left && l > scope.right - scopeValue) {
-      scrollRef.value.scrollLeft += scope.width - (scope.width - scopeValue);
-    } else if (l > scope.left && l < scope.left + scopeValue) {
-      scrollRef.value.scrollLeft -= scope.width - (scope.width - scopeValue);
-    }
-    scrollRef.value.scrollLeft = scrollRef.value.scrollLeft < 0 ? 0 : scrollRef.value.scrollLeft;
-    router.replace(tagger.path);
+export function useNavTag({
+  state,
+  store,
+  router,
+  route,
+  tags,
+}: UseNavTagParams) {
+  const closeTagHandler = createCloseTagHandler(state, tags.value, store, router);
+  const activeTagHandler = createActiveFunc(state, store, router);
+  const getCloseState = createGetCloseState(tags.value);
+  useWatchRoute(route, store, state);
+  return {
+    getCloseState,
+    closeTagHandler,
+    activeTagHandler,
   };
 }
