@@ -22,4 +22,5 @@ declare type Tagger = {
   path : string
   cache : boolean
   close : boolean
+  componentName : string
 }

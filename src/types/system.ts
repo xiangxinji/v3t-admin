@@ -9,6 +9,7 @@ export type MetaType = {
   title ?: string
   keepAlive ?: boolean
   icon ?: string
+  close : boolean
 }
 export type MenuTree = {
   path : string

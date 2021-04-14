@@ -29,9 +29,9 @@ export function convertRouterConfig(configs :any) {
   } return [configs];
 }
 
+// 将路由表生成为 菜单
 export function covertNormalizeMenuTree(menuTree : MenuTree): NormolizedMenuTree {
   const { path, children, meta } = menuTree;
-  console.log(children);
   const result:NormolizedMenuTree = {
     target: path, icon: meta?.icon || '', hasChildren: children && children.length > 0, children: [], outLink: false, title: meta?.title || '未定义',
   };

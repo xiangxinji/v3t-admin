@@ -1,9 +1,11 @@
 /* eslint-disable no-param-reassign */
 import {
-  Ref, ref, reactive, watch, computed, ComputedRef,
+  reactive, watch, ComputedRef,
 } from 'vue';
 import { RouteLocationNormalizedLoaded, Router } from 'vue-router';
 import { AppStore } from '@/store';
+import { MetaType } from '@/types/system';
+import settings from '@/utils/settings';
 
 export type StateType = {
   currentPath: string
@@ -26,12 +28,13 @@ export function createState() {
 }
 
 // 创建一个 tagger
-function createTagger(name: string, path: string, cache = true, close = true): Tagger {
+function createTagger(name: string, path: string, componentName : string, cache = settings.pageDefaultCache, close = settings.pageDefaultAllowClose): Tagger {
   return {
     name,
     path,
     cache,
     close,
+    componentName,
   };
 }
 
@@ -87,10 +90,14 @@ export function useWatchRoute(route: RouteLocationNormalizedLoaded, store: AppSt
   watch(route, () => {
     const path = route.fullPath;
     const name = route.meta.title as string;
+    const componentName = route.name as string;
     if (!name) return;
     const taggers = store.getters.tags;
     state.currentPath = route.path;
-    if (!taggers.some((i: Tagger) => i.path === path)) store.commit('tags/ADD_TAG', createTagger(name, path));
+    const meta = route.meta as MetaType;
+    const cache = meta && meta.keepAlive;
+    const close = meta && meta.close;
+    if (!taggers.some((i: Tagger) => i.path === path)) store.commit('tags/ADD_TAG', createTagger(name, path, componentName, cache, close));
   }, { immediate: true });
 }
 

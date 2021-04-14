@@ -15,12 +15,12 @@ const routerConfig:Array<any> = [
       {
         path: '/',
         component: '/Home',
+        name: 'Home',
         meta: {
           title: '首页',
           icon: 'el-icon-house',
         },
       },
-
     ],
   },
   {
@@ -31,8 +31,9 @@ const routerConfig:Array<any> = [
       {
         path: '/about',
         component: '/About/index',
+        name: 'About',
         meta: {
-          title: '关于', icon: 'el-icon-help',
+          title: '关于', icon: 'el-icon-help', keepAlive: true, close: false,
         },
       },
     ],

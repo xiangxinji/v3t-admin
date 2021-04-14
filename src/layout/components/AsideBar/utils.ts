@@ -17,7 +17,6 @@ export function useWatchMenus(store : AppStore, state : StateType) {
     menus.forEach((menu) => {
       if (!menu.hidden) state.menus.push(covertNormalizeMenuTree(menu));
     });
-    console.log(state.menus);
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
   }, { immediate: true });

@@ -11,6 +11,7 @@ import {
   ElSubmenu,
   ElMenuItem,
   ElBreadcrumbItem,
+  ElInput,
 } from 'element-plus';
 
 export default {
@@ -26,6 +27,7 @@ export default {
     app.component(ElMenuItem.name, ElMenuItem);
     app.component(ElSubmenu.name, ElSubmenu);
     app.component(ElBreadcrumbItem.name, ElBreadcrumbItem);
+    app.component(ElInput.name, ElInput);
     return app;
   },
 };
