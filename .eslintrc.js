@@ -24,7 +24,8 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types' : 'off',
     'import/prefer-default-export' : 'off',
     'no-param-reassign' : 'off',
-    'no-plusplus' : 'off'
+    'no-plusplus' : 'off',
+    '@typescript-eslint/no-explicit-any':'off'
   },
   overrides: [
     {

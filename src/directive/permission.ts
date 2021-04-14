@@ -6,7 +6,7 @@ function destroy(element:HTMLElement) {
   if (element.parentNode) (element.parentNode as HTMLElement).removeChild(element);
 }
 const directive : Directive = {
-  mounted(el, binding, vnode) {
+  mounted(el, binding) {
     let value :Array<string> = [];
     if (typeof binding.value === 'string') {
       value = binding.value.split(',');
