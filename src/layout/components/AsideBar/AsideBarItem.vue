@@ -4,7 +4,7 @@
       <i :class="config.icon"></i>
       <span>{{  config.title  }}</span>
     </template>
-    <aside-bar-item v-for="(child , ind ) in config.children" :config="child" :key="$options.key + '-' + ind " :index="child.target"/>
+    <aside-bar-item v-for="(child , ind ) in config.children" :config="child" :key="index + '-' + ind " :index="child.target"/>
   </el-submenu>
   <el-menu-item v-else :index="config.target">
     <i :class="config.icon"></i>
@@ -23,6 +23,9 @@ export default defineComponent({
     config: {
       type: Object as PropType<NormolizedMenuTree>,
       required: true,
+    },
+    index: {
+      type: [String, Number],
     },
   },
   name: 'AsideBarItem',

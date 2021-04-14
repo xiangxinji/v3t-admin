@@ -1,7 +1,7 @@
 <template>
   <div class="aside-bar" >
     <el-menu router class="el-menu-vertical-aside" :collapse="!fold" :default-active="state.defaultActive">
-      <aside-bar-item v-for="(menu,index) in state.menus" v-bind:config="menu" :key="index"></aside-bar-item>
+      <aside-bar-item v-for="(menu,index) in state.menus" v-bind:config="menu" :key="index" :index="index"></aside-bar-item>
     </el-menu>
   </div>
 </template>

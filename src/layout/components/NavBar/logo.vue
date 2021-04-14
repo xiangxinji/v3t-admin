@@ -1,8 +1,10 @@
 <template>
   <div class="logo" :style="{ width: fold ? layoutStyles.LogoWidth : '50px'}">
-    <h1>
-      {{  title  }}
-    </h1>
+    <router-link class="router-link" to="/">
+      <h1>
+        {{  title  }}
+      </h1>
+    </router-link>
   </div>
 </template>
 

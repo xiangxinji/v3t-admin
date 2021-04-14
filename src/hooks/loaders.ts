@@ -26,12 +26,19 @@ export function useLoadTable<T>(handler : Function, options:TableHookOptions = {
   if (options.immediate) refresh();
   function refresh() {
     react.pagination.current = 1;
-    reload();
+    return reload();
   }
   function reload() {
-    state.loading = true;
-    handler(state.query, state.pagination).then(resolve).finally(() => {
-      state.loading = false;
+    return new Promise((res, rej) => {
+      state.loading = true;
+      handler(state.query, state.pagination).then((response : ResponseContent<PageResult<T>>) => {
+        resolve(response);
+        res(response);
+      }).catch((err : any) => {
+        rej(err);
+      }).finally(() => {
+        state.loading = false;
+      });
     });
   }
   return [state as StateType<T>, refresh, reload];
