@@ -31,9 +31,11 @@ export function convertRouterConfig(configs :any) {
 
 export function covertNormalizeMenuTree(menuTree : MenuTree): NormolizedMenuTree {
   const { path, children, meta } = menuTree;
+  console.log(children);
   const result:NormolizedMenuTree = {
-    target: path, icon: meta?.icon || '', hasChildren: children.length > 0, children: [], outLink: false, title: meta?.title || '未定义',
+    target: path, icon: meta?.icon || '', hasChildren: children && children.length > 0, children: [], outLink: false, title: meta?.title || '未定义',
   };
+  if (!children) return result;
   if (children.length === 1) {
     result.hasChildren = false;
     const child = children[0];

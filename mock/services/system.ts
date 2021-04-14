@@ -7,6 +7,10 @@ const routerConfig:Array<any> = [
     path: '/',
     component: 'Layout',
     hidden: false,
+    meta: {
+      title: '测试',
+      icon: 'el-icon-house',
+    },
     children: [
       {
         path: '/',
@@ -16,6 +20,7 @@ const routerConfig:Array<any> = [
           icon: 'el-icon-house',
         },
       },
+
     ],
   },
   {
