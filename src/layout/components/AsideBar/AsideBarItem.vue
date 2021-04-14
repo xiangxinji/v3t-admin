@@ -1,0 +1,37 @@
+<template>
+  <el-submenu v-if="config.hasChildren">
+    <template #title>
+      <i :class="config.icon"></i>
+      <span>{{  config.title  }}</span>
+    </template>
+    <aside-bar-item v-for="(child , ind ) in config.children" :config="child" :key="$options.key + '-' + ind " :index="child.path"/>
+  </el-submenu>
+  <el-menu-item v-else :index="config.target">
+    <template #title>
+      <i :class="config.icon"></i>
+      <span>{{  config.title  }}</span>
+    </template>
+  </el-menu-item>
+</template>
+
+<script lang="ts">
+import { defineComponent, PropType } from 'vue';
+import { NormolizedMenuTree } from '@/types/system';
+
+export default defineComponent({
+  props: {
+    config: {
+      type: Object as PropType<NormolizedMenuTree>,
+      required: true,
+    },
+  },
+  name: 'AsideBarItem',
+  setup(props) {
+    console.log(props);
+    return props;
+  },
+});
+</script>
+<style lang="scss" scoped>
+
+</style>

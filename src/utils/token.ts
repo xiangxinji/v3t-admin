@@ -1,5 +1,9 @@
+import settings from './settings';
+
 const storage = window.localStorage;
-const tokenKey = 'v3t-admin-token';
+
+const tokenKey = settings.storageTokenKey;
+
 export function setToken(token : string) {
   if (token) storage.setItem(tokenKey, token);
 }

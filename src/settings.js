@@ -1,5 +1,6 @@
 
 module.exports = {
   appTitle : 'V3T manager',
-  routerWhiteList : []
+  routerWhiteList : [] ,
+  storageTokenKey : 'v3t-admin-token'
 }

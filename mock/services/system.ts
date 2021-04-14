@@ -6,12 +6,14 @@ const routerConfig:Array<any> = [
   {
     path: '/',
     component: 'Layout',
+    hidden: false,
     children: [
       {
         path: '/',
         component: '/Home',
         meta: {
           title: '首页',
+          icon: 'el-icon-house',
         },
       },
     ],
@@ -19,12 +21,13 @@ const routerConfig:Array<any> = [
   {
     path: '/about',
     component: 'Layout',
+    hidden: false,
     children: [
       {
         path: '/about',
         component: '/About/index',
         meta: {
-          title: '关于',
+          title: '关于', icon: 'el-icon-help',
         },
       },
     ],

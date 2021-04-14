@@ -9,4 +9,4 @@ export default [
   },
 ];
 
-export const noFindRoute = { path: '/:pathMatch(.*)*', redirect: '/exception/404' };
+export const noFindRoute = { path: '/:pathMatch(.*)*', redirect: '/exception/404', hidden: true };

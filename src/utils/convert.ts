@@ -1,4 +1,5 @@
 import Layout from '@/layout/index.vue';
+import { MenuTree, NormolizedMenuTree } from '@/types/system';
 
 function loadView(c : string) {
   return () => new Promise((resolve) => {
@@ -26,6 +27,25 @@ export function convertRouterConfig(configs :any) {
   if (Array.isArray(configs)) {
     return configs;
   } return [configs];
+}
+
+export function covertNormalizeMenuTree(menuTree : MenuTree): NormolizedMenuTree {
+  const { path, children, meta } = menuTree;
+  const result:NormolizedMenuTree = {
+    target: path, icon: meta?.icon || '', hasChildren: children.length > 0, children: [], outLink: false, title: meta?.title || '未定义',
+  };
+  if (children.length === 1) {
+    result.hasChildren = false;
+    const child = children[0];
+    result.target = child.path;
+    result.children = [];
+    result.icon = child?.meta?.icon || '';
+    result.title = child?.meta?.title || '未定义';
+  }
+  if (result.hasChildren) {
+    result.children = children.map((childSource) => covertNormalizeMenuTree(childSource));
+  }
+  return result;
 }
 
 export function decodeUrlC(url : string) {

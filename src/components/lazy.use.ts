@@ -9,6 +9,7 @@ import {
   ElIcon,
   ElMenu,
   ElSubmenu,
+  ElMenuItem,
   ElBreadcrumbItem,
 } from 'element-plus';
 
@@ -22,6 +23,7 @@ export default {
     app.component(ElBreadcrumb.name, ElBreadcrumb);
     app.component(ElIcon.name, ElIcon);
     app.component(ElMenu.name, ElMenu);
+    app.component(ElMenuItem.name, ElMenuItem);
     app.component(ElSubmenu.name, ElSubmenu);
     app.component(ElBreadcrumbItem.name, ElBreadcrumbItem);
     return app;

@@ -1,19 +1,20 @@
-import { ActionContext } from 'vuex';
+import { ActionContext, Module } from 'vuex';
 import { build } from '@/api/system';
 import { convertRouterConfig } from '@/utils/convert';
 import { noFindRoute } from '@/router/constants';
+import { MenuTree } from '@/types/system';
 
 export type StateType = {
   asideFold : boolean
-  asideMenus: any
+  asideMenus: Array<MenuTree>
 }
 
 const state :StateType = {
   asideFold: true,
-  asideMenus: null,
+  asideMenus: [],
 };
 
-export default {
+const options: Module<StateType, RootState> = {
   state,
   mutations: {
     CHANGE_ASIDE_FOLDER(s:StateType, value : boolean) :void {
@@ -33,3 +34,4 @@ export default {
     },
   },
 };
+export default options;
