@@ -17,7 +17,6 @@ export type UseNavTagParams = {
   route: RouteLocationNormalizedLoaded,
   tags : ComputedRef<Array<Tagger>>
 }
-
 export function createState() {
   const state = reactive<StateType>({
     currentPath: '',
@@ -26,7 +25,6 @@ export function createState() {
     state,
   };
 }
-
 // 创建一个 tagger
 function createTagger(name: string, path: string, componentName : string, cache = settings.pageDefaultCache, close = settings.pageDefaultAllowClose): Tagger {
   return {

@@ -8,5 +8,7 @@ module.exports = {
   // 页面默认缓存
   pageDefaultCache : false ,
   // 页面默认允许被关闭
-  pageDefaultAllowClose : true
+  pageDefaultAllowClose : true,
+  // 按钮权限最大范围 key (只要拥有这个key 则不限制按钮权限)
+  maxPermissionKey : 'admin'
 }

@@ -12,6 +12,8 @@ import {
   ElMenuItem,
   ElBreadcrumbItem,
   ElInput,
+  ElTable,
+  ElTableColumn,
 } from 'element-plus';
 
 export default {
@@ -28,6 +30,8 @@ export default {
     app.component(ElSubmenu.name, ElSubmenu);
     app.component(ElBreadcrumbItem.name, ElBreadcrumbItem);
     app.component(ElInput.name, ElInput);
+    app.component(ElTable.name, ElTable);
+    app.component(ElTableColumn.name, ElTableColumn);
     return app;
   },
 };

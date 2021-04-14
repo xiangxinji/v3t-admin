@@ -6,6 +6,7 @@ export type Setting = {
   storageTokenKey: string
   pageDefaultCache: boolean
   pageDefaultAllowClose : boolean
+  maxPermissionKey: string
 }
 const s = settings as Setting;
 export default s;

@@ -38,6 +38,21 @@ const routerConfig:Array<any> = [
       },
     ],
   },
+  {
+    path: '/user',
+    component: 'Layout',
+    hidden: false,
+    children: [
+      {
+        path: '/user/manager',
+        component: '/User/usersManager',
+        name: 'UserManager',
+        meta: {
+          title: '用户管理', icon: 'el-icon-help', keepAlive: true, close: true,
+        },
+      },
+    ],
+  },
 ];
 
 Mock.mock(`/${prefix}/build`, 'post', builder(routerConfig, '请求成功'));

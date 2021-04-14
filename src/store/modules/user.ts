@@ -1,14 +1,15 @@
 import { UserFormData, UserInfoData } from '@/types/user';
 import { ActionContext, Module } from 'vuex';
 import { login as logIn, userInfo } from '@/api/user';
-import { build } from '@/api/system';
 import { setToken } from '@/utils/token';
 
 export type StateType = {
   user ?: UserInfoData
+  perms : Array<string>
 }
 const state :StateType = {
   user: undefined,
+  perms: [],
 };
 
 const options : Module<StateType, RootState> = {
@@ -16,6 +17,9 @@ const options : Module<StateType, RootState> = {
   mutations: {
     SET_USER_INFO(s : StateType, user : UserInfoData) {
       s.user = user;
+    },
+    SET_USER_PERMS(s : StateType, perms : Array<string>) {
+      s.perms = perms;
     },
   },
   actions: {
@@ -27,6 +31,7 @@ const options : Module<StateType, RootState> = {
     async getUserInfo(context : ActionContext<StateType, RootState>) {
       const response = await userInfo();
       context.commit('SET_USER_INFO', response.result);
+      context.commit('SET_USER_PERMS', response.result.perms);
       return response.result;
     },
   },

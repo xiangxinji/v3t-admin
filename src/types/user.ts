@@ -9,4 +9,5 @@ export type UserInfoData ={
   nickName: string,
   createTime: string,
   roles: Array<string>,
+  perms: Array<string>
 }

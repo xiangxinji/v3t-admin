@@ -24,3 +24,19 @@ declare type Tagger = {
   close : boolean
   componentName : string
 }
+
+declare type PageResult <T> = {
+  totalElements : number
+  size : number
+  current : number
+  content : Array<T>
+}
+
+declare type Pagination = {
+  current : number
+  size : number
+}
+
+declare module 'deepclone' {
+  export default any;
+}

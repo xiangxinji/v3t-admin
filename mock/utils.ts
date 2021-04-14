@@ -24,3 +24,12 @@ export const builder = (data : any, message : string, code = 0, headers = {}) =>
   responseBody.timestamp = new Date().getTime();
   return responseBody;
 };
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+export const queryList = <S> (data : Array<S>) :PageResult <any> => ({
+  totalElements: 0,
+  current: 1,
+  size: 10,
+  content: data,
+});
