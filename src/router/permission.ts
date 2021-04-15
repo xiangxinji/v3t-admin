@@ -46,7 +46,7 @@ export default function usePermission(router : Router) {
     }
   });
 
-  router.afterEach((to, from) => {
+  router.afterEach(() => {
     NProgress.done();
   });
 }

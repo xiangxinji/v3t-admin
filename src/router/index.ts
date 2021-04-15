@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import usePromission from './permission';
+import usePermission from './permission';
 import constantsRouters from './constants';
 
 const routes: Array<RouteRecordRaw> = [
@@ -11,6 +11,5 @@ const router = createRouter({
   routes,
 });
 
-usePromission(router);
-
+usePermission(router);
 export default router;
