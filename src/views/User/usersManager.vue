@@ -1,7 +1,6 @@
 <template>
   <div class="page users-manager">
     <el-table
-      :row-key="row => row.id"
       :data="state.data"
       style="width: 100%">
       <el-table-column prop="id" label="ID"> </el-table-column>
@@ -9,10 +8,9 @@
       <el-table-column prop="nickName" label="名称"> </el-table-column>
       <el-table-column prop="createTime" label="创建时间"> </el-table-column>
       <el-table-column label="操作">
-       <template>
-         <el-button  v-permission="['user-edit']">编辑</el-button>
-         <el-button type="text">删除</el-button>
-       </template>
+        <template v-slot="scope">
+          <el-button v-permission="['admin','add']" :key="scope.id">编辑</el-button>
+        </template>
       </el-table-column>
     </el-table>
 
@@ -43,7 +41,7 @@ export default defineComponent({
     const state = reactive({
       data: [
         {
-          id: 1, username: '张三', nickName: '李四', creteTime: '2020-1-1',
+          id: 1, username: '张三', nickName: '李四', createTime: '2020-1-1',
         },
       ],
     });
