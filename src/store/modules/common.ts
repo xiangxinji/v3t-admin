@@ -2,11 +2,11 @@ import { ActionContext, Module } from 'vuex';
 import { build } from '@/api/system';
 import { convertRouterConfig } from '@/utils/convert';
 import { noFindRoute } from '@/router/constants';
-import { MenuTree } from '@/types/system';
+import { BuildRouteConf } from '@/types/system';
 
 export type StateType = {
   asideFold : boolean
-  asideMenus: Array<MenuTree>
+  asideMenus: Array<BuildRouteConf>
 }
 
 const state :StateType = {

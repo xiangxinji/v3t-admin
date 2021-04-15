@@ -1,6 +1,6 @@
 import { AppStore } from '@/store';
 import { watch } from 'vue';
-import { MenuTree, NormolizedMenuTree } from '@/types/system';
+import { BuildRouteConf, NormolizedMenuTree } from '@/types/system';
 import { covertNormalizeMenuTree } from '@/utils/convert';
 
 export type StateType = {
@@ -12,7 +12,7 @@ export type UseAsideBarParams = {
 }
 
 export function useWatchMenus(store : AppStore, state : StateType) {
-  watch<Array<MenuTree>>(store.getters.menus, (menus) => {
+  watch<Array<BuildRouteConf>>(store.getters.menus, (menus) => {
     state.menus = [];
     menus.forEach((menu) => {
       if (!menu.hidden) state.menus.push(covertNormalizeMenuTree(menu));

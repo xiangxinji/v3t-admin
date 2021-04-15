@@ -1,5 +1,5 @@
 import { GetterTree } from 'vuex';
-import { MenuTree } from '@/types/system';
+import { BuildRouteConf } from '@/types/system';
 
 const getters : GetterTree<any, RootState> = {
   user: (state) => state.user.user,
@@ -8,7 +8,7 @@ const getters : GetterTree<any, RootState> = {
     return [];
   },
   tags: (state):Array<Tagger> => state.tags.tags,
-  menus: (state):Array<MenuTree> => state.common.asideMenus,
+  menus: (state):Array<BuildRouteConf> => state.common.asideMenus,
 };
 
 export default getters;

@@ -1,8 +1,10 @@
 export type BuildRouteConf = {
     path : string
-    component : string,
-    meta : { title : string },
-    children : Array<BuildRouteConf>
+    component ?: string | Function | object,
+    hidden?: boolean,
+    redirect?:string,
+    meta ?: { title : string, keepAlive ?: boolean, close ?: boolean, icon ?: string },
+    children ?: Array<BuildRouteConf>
 }
 
 export type MetaType = {
@@ -10,13 +12,6 @@ export type MetaType = {
   keepAlive ?: boolean
   icon ?: string
   close : boolean
-}
-export type MenuTree = {
-  path : string
-  component : string
-  meta ?: MetaType,
-  hidden ?: boolean
-  children : Array<MenuTree>
 }
 
 export type NormolizedMenuTree = {

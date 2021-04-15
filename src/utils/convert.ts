@@ -1,5 +1,5 @@
 import Layout from '@/layout/index.vue';
-import { MenuTree, NormolizedMenuTree } from '@/types/system';
+import { BuildRouteConf, NormolizedMenuTree } from '@/types/system';
 
 function loadView(c : string) {
   return () => new Promise((resolve) => {
@@ -9,7 +9,7 @@ function loadView(c : string) {
 
 // 将后台传递的路由文件给转换成 router config 准备传递给 Vue Router
 // eslint-disable-next-line no-underscore-dangle
-function _convertRouterConfig(route : any) {
+function _convertRouterConfig(route : BuildRouteConf) {
   if (typeof route.component === 'string') {
     if (route.component.toLowerCase() === 'layout') route.component = Layout;
     else {
@@ -20,7 +20,7 @@ function _convertRouterConfig(route : any) {
   if (route.children && Array.isArray(route.children)) route.children.forEach((r : any) => _convertRouterConfig(r));
 }
 
-export function convertRouterConfig(configs :any) {
+export function convertRouterConfig(configs :BuildRouteConf | Array<BuildRouteConf>):Array<BuildRouteConf> {
   if (Array.isArray(configs)) {
     configs.forEach((conf) => _convertRouterConfig(conf));
   } else _convertRouterConfig(configs);
@@ -30,10 +30,10 @@ export function convertRouterConfig(configs :any) {
 }
 
 // 将路由表生成为 菜单
-export function covertNormalizeMenuTree(menuTree : MenuTree): NormolizedMenuTree {
+export function covertNormalizeMenuTree(menuTree : BuildRouteConf): NormolizedMenuTree {
   const { path, children, meta } = menuTree;
   const result:NormolizedMenuTree = {
-    target: path, icon: meta?.icon || '', hasChildren: children && children.length > 0, children: [], outLink: false, title: meta?.title || '未定义',
+    target: path, icon: meta?.icon || '', hasChildren: (children && children.length > 0) || false, children: [], outLink: false, title: meta?.title || '未定义',
   };
   if (!children) return result;
   if (children.length === 1) {
