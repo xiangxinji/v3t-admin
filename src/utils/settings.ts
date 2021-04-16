@@ -7,6 +7,7 @@ export type Setting = {
   pageDefaultCache: boolean
   pageDefaultAllowClose : boolean
   maxPermissionKey: string
+  noneDefineKeepAliveRouteName: string
 }
 const s = settings as Setting;
 export default s;

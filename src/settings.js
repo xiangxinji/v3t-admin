@@ -10,5 +10,7 @@ module.exports = {
   // 页面默认允许被关闭
   pageDefaultAllowClose : true,
   // 按钮权限最大范围 key (只要拥有这个key 则不限制按钮权限)
-  maxPermissionKey : 'admin'
+  maxPermissionKey : 'admin',
+  // 如果对应匹配的路由没有定义 name , 那么会取这个当做 componentName
+  noneDefineKeepAliveRouteName : 'NONE_COMPONENT'
 }

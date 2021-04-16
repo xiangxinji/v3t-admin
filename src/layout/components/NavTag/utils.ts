@@ -88,7 +88,7 @@ export function useWatchRoute(route: RouteLocationNormalizedLoaded, store: AppSt
   watch(route, () => {
     const path = route.fullPath;
     const name = route.meta.title as string;
-    const componentName = route.name as string || 'NONE_COMPONENT';
+    const componentName = route.name as string || settings.noneDefineKeepAliveRouteName;
     if (!name) return;
     const taggers = store.getters.tags;
     state.currentPath = route.path;

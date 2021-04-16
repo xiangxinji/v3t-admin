@@ -36,7 +36,7 @@ export function covertNormalizeMenuTree(menuTree : BuildRouteConf): NormolizedMe
   const result:NormolizedMenuTree = {
     target: path, icon: meta?.icon || '', hasChildren: (children && children.length > 0) || false, children: [], outLink: meta?.outLink || false, title: meta?.title || '未定义',
   };
-  if (!children) return result;
+  if (!children || result.outLink) return result;
   if (children.length === 1) {
     result.hasChildren = false;
     const child = children[0];
