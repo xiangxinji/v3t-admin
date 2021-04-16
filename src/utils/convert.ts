@@ -10,6 +10,7 @@ function loadView(c : string) {
 // 将后台传递的路由文件给转换成 router config 准备传递给 Vue Router
 // eslint-disable-next-line no-underscore-dangle
 function _convertRouterConfig(route : BuildRouteConf) {
+  // 过滤外部链接
   if (typeof route.component === 'string') {
     if (route.component.toLowerCase() === 'layout') route.component = Layout;
     else {
@@ -33,7 +34,7 @@ export function convertRouterConfig(configs :BuildRouteConf | Array<BuildRouteCo
 export function covertNormalizeMenuTree(menuTree : BuildRouteConf): NormolizedMenuTree {
   const { path, children, meta } = menuTree;
   const result:NormolizedMenuTree = {
-    target: path, icon: meta?.icon || '', hasChildren: (children && children.length > 0) || false, children: [], outLink: false, title: meta?.title || '未定义',
+    target: path, icon: meta?.icon || '', hasChildren: (children && children.length > 0) || false, children: [], outLink: meta?.outLink || false, title: meta?.title || '未定义',
   };
   if (!children) return result;
   if (children.length === 1) {
@@ -41,8 +42,9 @@ export function covertNormalizeMenuTree(menuTree : BuildRouteConf): NormolizedMe
     const child = children[0];
     result.target = child.path;
     result.children = [];
-    result.icon = child?.meta?.icon || '';
-    result.title = child?.meta?.title || '未定义';
+    result.icon = child?.meta?.icon || result.icon;
+    result.title = child?.meta?.title || result.title;
+    result.outLink = child?.meta?.outLink || result.outLink;
   }
   if (result.hasChildren) {
     result.children = children.map((childSource) => covertNormalizeMenuTree(childSource));

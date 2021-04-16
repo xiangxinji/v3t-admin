@@ -25,15 +25,26 @@ const routerConfig:Array<any> = [
   },
   {
     path: '/about',
-    component: 'Layout',
-    hidden: false,
+    component: 'layout',
+    meta: { title: '可选外链集合', icon: 'el-icon-help' },
     children: [
       {
-        path: '/about',
-        component: '/About/index',
-        name: 'About',
+        path: 'http://www.baidu.com',
         meta: {
-          title: '关于', icon: 'el-icon-help', keepAlive: true, close: false,
+          title: 'baidu', icon: 'el-icon-help', outLink: true,
+        },
+      },
+      {
+        path: 'http://www.bilibili.com',
+        meta: {
+          title: 'bilibili', icon: 'el-icon-help', outLink: true,
+        },
+      },
+      {
+        path: '/about/manager',
+        component: '/About/index',
+        meta: {
+          title: '关于', icon: 'el-icon-help', keepAlive: true,
         },
       },
     ],

@@ -3,6 +3,7 @@ import { build } from '@/api/system';
 import { convertRouterConfig } from '@/utils/convert';
 import { noFindRoute } from '@/router/constants';
 import { BuildRouteConf } from '@/types/system';
+import { excludeOutLinkRouter } from '@/utils/filters';
 
 export type StateType = {
   asideFold : boolean
@@ -27,9 +28,11 @@ const options: Module<StateType, RootState> = {
   actions: {
     async buildMenuTree(context :ActionContext<StateType, RootState>, roles : Array<string>) {
       const response = await build(roles);
-      const r = convertRouterConfig(response.result);
+      const r = excludeOutLinkRouter(convertRouterConfig(response.result));
+      console.log(r);
       context.commit('SET_ASIDE_MENUS', response.result);
       r.push(noFindRoute);
+      console.log(r);
       return r;
     },
   },
