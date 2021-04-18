@@ -96,7 +96,6 @@ export function useWatchRoute(route: RouteLocationNormalizedLoaded, store: AppSt
     const cache = meta && meta.keepAlive || false;
     const close = meta && meta.close || true;
     const tagger = createTagger(name, path, componentName, cache, close);
-    console.log(tagger);
     if (!taggers.some((i: Tagger) => i.path === path)) store.commit('tags/ADD_TAG', tagger);
   }, { immediate: true });
 }

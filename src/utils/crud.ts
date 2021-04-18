@@ -1,12 +1,17 @@
 // eslint-disable-next-line max-classes-per-file
-import { reactive } from 'vue';
+import {
+  provide, reactive, computed,
+} from 'vue';
 import request from '@/utils/request';
 import { AxiosRequestConfig } from 'axios';
 import deepClone from 'deepclone';
+import { toCamelCase } from '@/utils/convert';
 import { EventEmitter } from './event';
 
+let UUID = 0;
+
 class CrudTools {
-  static toSelect<QT, RT>(url : string, dataConf : { params?:any, data ?: any}) {
+  static toSelect<RT>(url : string, dataConf : { params?:any, data ?: any}) {
     const config = {
       url,
       method: 'GET',
@@ -44,29 +49,34 @@ class CrudTools {
   }
 }
 
-export type CrudOptions<QT, ET, DataKey> = {
+export type CrudOptions<QT, ET> = {
   url : string
   query ?: QT
   selectImmediate ?: boolean
   deepCloneQuery ?: boolean
-  dataKey ?: DataKey
+  dataKey ?: keyof ET
+}
+export type CrudHookOption = {
+  tag ?:string
 }
 
-class Crud <QT, ET, DataKey extends keyof ET> extends EventEmitter {
+class Crud <QT, ET> extends EventEmitter {
+  readonly uuid : number
+
   // 请求的 URL
-  url : string
+  readonly url : string
 
   // 查询条件
-  query ?: QT ;
+  query : QT
 
   // 第一次默认去请求
   readonly selectImmediate : boolean
 
   // data key = id
-  readonly dataKey :DataKey | string ;
+  readonly dataKey : keyof ET ;
 
   // 初始配置
-  options : CrudOptions<QT, ET, DataKey> ;
+  options : CrudOptions<QT, ET> ;
 
   // 分页对象
   pagination : Pagination
@@ -79,24 +89,30 @@ class Crud <QT, ET, DataKey extends keyof ET> extends EventEmitter {
   // 用户选择的多选数据
   selectionData : Array<ET> = []
 
-  constructor(options : CrudOptions<QT, ET, DataKey>) {
+  // 是否正在加载
+  loading : boolean
+
+  constructor(options : CrudOptions<QT, ET>) {
     super();
+    this.uuid = UUID++;
     this.url = options.url;
-    this.query = options.query;
-    this.selectImmediate = options.selectImmediate || false;
-    this.dataKey = options.dataKey || 'id';
-    this.pagination = reactive<Pagination>({ current: 1, size: 10 });
-    this.options = Object.freeze(options);
-    this.data = reactive({ data: [] }).data;
+    this.loading = false;
+    this.query = (options.query || {}) as QT;
+    this.selectImmediate = options.selectImmediate || true;
+    this.dataKey = (options.dataKey || 'id') as keyof ET;
+    this.pagination = { current: 1, size: 10 };
+    this.data = [];
+    this.options = options;
+    return reactive(this) as Crud<QT, ET>;
   }
 
   get dataKeys() {
-    return this.data.map((item) => item[this.dataKey as DataKey]);
+    return this.data.map((item) => item[this.dataKey]);
   }
 
   get selectionDataKeys() {
     if (this.selectionData.length === 0) return [];
-    return this.selectionData.map((item) => item[this.dataKey as DataKey]);
+    return this.selectionData.map((item) => item[this.dataKey]);
   }
 
   init():void {
@@ -105,16 +121,20 @@ class Crud <QT, ET, DataKey extends keyof ET> extends EventEmitter {
   }
 
   select() {
-    const task = CrudTools.toSelect<QT, PageResult<ET>>(this.url, { params: this.query });
+    this.loading = true;
+    const task = CrudTools.toSelect<PageResult<ET>>(this.url, { params: { ...this.query, ...this.pagination } });
     task.then(({ result }) => {
+      console.log(this);
       this.data = result.content;
       this.pagination.size = result.size;
       this.pagination.current = result.current;
       this.callHook('select-success', this.data, this.pagination);
+    }).finally(() => {
+      this.loading = false;
     });
   }
 
-  delete(deleteKeys ?: Array<ET[DataKey]> | ET[DataKey]) {
+  delete(deleteKeys ?: Array<ET[keyof ET]> | ET[keyof ET]) {
     deleteKeys = deleteKeys || this.selectionDataKeys;
     const task = CrudTools.toDelete(this.url, deleteKeys);
     task.then((response) => {
@@ -154,8 +174,9 @@ class Crud <QT, ET, DataKey extends keyof ET> extends EventEmitter {
   }
 }
 
-export function useCrud<QT, ET, DataKey extends keyof ET>(options : CrudOptions<QT, ET, DataKey>) {
-  const crud = new Crud(options);
+export function useCrud<QT, ET>(options :CrudOptions< QT, ET>, hookOptions ?: CrudHookOption) {
+  const crud = new Crud<QT, ET>(options);
   crud.init();
+  provide(toCamelCase(hookOptions?.tag || 'crud-default'), crud);
   return crud;
 }

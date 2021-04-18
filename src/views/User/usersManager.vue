@@ -1,7 +1,7 @@
 <template>
   <div class="page users-manager">
     <el-table
-      :data="state.data"
+      :data="crud.data"
       style="width: 100%">
       <el-table-column prop="id" label="ID"> </el-table-column>
       <el-table-column prop="username" label="用户名"> </el-table-column>
@@ -13,40 +13,29 @@
         </template>
       </el-table-column>
     </el-table>
-
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from 'vue';
-import { query } from '@/api/user';
-import { useLoadTable } from '@/hooks/loaders';
-import { useStore } from 'vuex';
+import { defineComponent } from 'vue';
+import { useCrud } from '@/utils/crud';
 
 type User = {
-  id : number
+  userid : number
   username : string
   nickName : string
   createTime : string
 }
-const defaultQuery = {
-  name: '',
-  deep: {
-    name: 123,
-  },
-};
 
 export default defineComponent({
+  components: {
+  },
   setup() {
-    const state = reactive({
-      data: [
-        {
-          id: 1, username: '张三', nickName: '李四', createTime: '2020-1-1',
-        },
-      ],
+    const crud = useCrud({
+      url: '/user/query',
     });
     return {
-      state,
+      crud,
     };
   },
 });

@@ -1,3 +1,4 @@
+/* eslint-disable no-continue */
 import Layout from '@/layout/index.vue';
 import { BuildRouteConf, NormolizedMenuTree } from '@/types/system';
 
@@ -54,4 +55,22 @@ export function covertNormalizeMenuTree(menuTree : BuildRouteConf): NormolizedMe
 
 export function decodeUrlC(url : string) {
   return decodeURIComponent(url);
+}
+
+export function toCamelCase(name : string) : string {
+  let isBreakLine = false;
+  let result = '';
+  for (let i = 0; i < name.length; i++) {
+    if (isBreakLine) {
+      isBreakLine = false;
+      result += name.charAt(i).toUpperCase();
+      continue;
+    }
+    if (name.charAt(i) === '-') {
+      isBreakLine = true;
+      continue;
+    }
+    result += name.charAt(i);
+  }
+  return result;
 }

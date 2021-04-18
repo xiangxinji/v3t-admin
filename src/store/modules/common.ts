@@ -29,10 +29,8 @@ const options: Module<StateType, RootState> = {
     async buildMenuTree(context :ActionContext<StateType, RootState>, roles : Array<string>) {
       const response = await build(roles);
       const r = excludeOutLinkRouter(convertRouterConfig(response.result));
-      console.log(r);
       context.commit('SET_ASIDE_MENUS', response.result);
       r.push(noFindRoute);
-      console.log(r);
       return r;
     },
   },
