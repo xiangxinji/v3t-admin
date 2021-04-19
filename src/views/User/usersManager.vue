@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { useCrud } from '@/utils/crud';
+import { useCrud } from '@/hooks/crud';
 
 const query = {
   username: '',

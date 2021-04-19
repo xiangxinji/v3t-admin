@@ -33,6 +33,7 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const breadcrumbs = computed(() => getBreadcrumbs(route));
+    console.log(breadcrumbs);
     return {
       breadcrumbs,
     };

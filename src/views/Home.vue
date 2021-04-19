@@ -19,7 +19,7 @@ export default defineComponent({
     const router = useRouter();
     return {
       target() {
-        router.push('/about');
+        router.push('/about/manager');
       },
     };
   },
