@@ -1,11 +1,14 @@
+/* eslint-disable no-underscore-dangle */
 // eslint-disable-next-line max-classes-per-file
 import {
-  provide, reactive, computed,
+  provide, reactive,
 } from 'vue';
 import request from '@/utils/request';
 import { AxiosRequestConfig } from 'axios';
 import deepClone from 'deepclone';
 import { toCamelCase } from '@/utils/convert';
+import { ElMessageBox } from 'element-plus';
+import { isDef } from '@/utils/functions';
 import { EventEmitter } from './event';
 
 let UUID = 0;
@@ -55,9 +58,11 @@ export type CrudOptions<QT, ET> = {
   selectImmediate ?: boolean
   deepCloneQuery ?: boolean
   dataKey ?: keyof ET
+  confirm ?: boolean
 }
 export type CrudHookOption = {
   tag ?:string
+  confirmDialog ?: boolean // 是否开启确认弹框如删除等
 }
 
 class Crud <QT, ET> extends EventEmitter {
@@ -102,7 +107,7 @@ class Crud <QT, ET> extends EventEmitter {
     this.dataKey = (options.dataKey || 'id') as keyof ET;
     this.pagination = { current: 1, size: 10 };
     this.data = [];
-    this.options = options;
+    this.options = Object.freeze(options);
     return reactive(this) as Crud<QT, ET>;
   }
 
@@ -124,7 +129,6 @@ class Crud <QT, ET> extends EventEmitter {
     this.loading = true;
     const task = CrudTools.toSelect<PageResult<ET>>(this.url, { params: { ...this.query, ...this.pagination } });
     task.then(({ result }) => {
-      console.log(this);
       this.data = result.content;
       this.pagination.size = result.size;
       this.pagination.current = result.current;
@@ -135,7 +139,18 @@ class Crud <QT, ET> extends EventEmitter {
   }
 
   delete(deleteKeys ?: Array<ET[keyof ET]> | ET[keyof ET]) {
-    deleteKeys = deleteKeys || this.selectionDataKeys;
+    if (!isDef(deleteKeys) && !isDef(this.selectionDataKeys)) {
+      this.callHook('delete-before-empty');
+      return;
+    }
+    const keys = (Array.isArray(deleteKeys) ? deleteKeys : [deleteKeys]) || [];
+    this.callHook('delete-before', keys);
+    if (!this.options.confirm) {
+      this._doDelete(keys as Array<ET[keyof ET]>);
+    }
+  }
+
+  _doDelete(deleteKeys : Array<ET[keyof ET]> | ET[keyof ET]) {
     const task = CrudTools.toDelete(this.url, deleteKeys);
     task.then((response) => {
       if (response.code === 200) {
@@ -146,6 +161,10 @@ class Crud <QT, ET> extends EventEmitter {
   }
 
   create(entity : ET) {
+    this._doCreate(entity);
+  }
+
+  _doCreate(entity : ET) {
     const task = CrudTools.toCreate<ET>(this.url, entity);
     task.then((response) => {
       if (response.code === 200) {
@@ -160,6 +179,10 @@ class Crud <QT, ET> extends EventEmitter {
     if (!entity) {
       return;
     }
+    this._doUpdate(entity);
+  }
+
+  _doUpdate(entity : ET) {
     const task = CrudTools.toUpdate<ET>(this.url, entity);
     task.then((response) => {
       if (response.code === 200) {
@@ -170,13 +193,26 @@ class Crud <QT, ET> extends EventEmitter {
   }
 
   callHook(hookName : string, ...params :any[]) {
-    this.emit(hookName, ...params);
+    return this.emit(hookName, ...params);
   }
 }
 
+function deleteConfirm(keys : string []) {
+  return ElMessageBox.confirm(`此操作将永久删除该${keys.length}条数据, 是否继续?`, '提示', {
+    type: 'warning',
+  });
+}
 export function useCrud<QT, ET>(options :CrudOptions< QT, ET>, hookOptions ?: CrudHookOption) {
+  options.confirm = hookOptions?.confirmDialog || false;
   const crud = new Crud<QT, ET>(options);
   crud.init();
   provide(toCamelCase(hookOptions?.tag || 'crud-default'), crud);
+  if (hookOptions?.confirmDialog) {
+    crud.on('delete-before', (keys : Array<string>) => {
+      deleteConfirm(keys).then(() => {
+        crud._doDelete(keys as any);
+      });
+    });
+  }
   return crud;
 }

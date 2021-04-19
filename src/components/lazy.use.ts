@@ -14,6 +14,7 @@ import {
   ElInput,
   ElTable,
   ElTableColumn,
+  ElMessageBox,
 } from 'element-plus';
 
 export default {
@@ -32,6 +33,7 @@ export default {
     app.component(ElInput.name, ElInput);
     app.component(ElTable.name, ElTable);
     app.component(ElTableColumn.name, ElTableColumn);
+    app.component(ElMessageBox.name, ElMessageBox);
     return app;
   },
 };

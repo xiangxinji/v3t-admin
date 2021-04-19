@@ -16,7 +16,13 @@ export class EventEmitter {
     if (!this.handlers[eventName]) {
       this.handlers[eventName] = [];
     }
-    this.handlers[eventName].push(handler);
+    this.handlers[eventName].push(function handlerCallback(this : EventEmitter, ...params : any []):void {
+      try {
+        handler.apply(this, params);
+      } catch (e) {
+        console.warn(e);
+      }
+    });
   }
 
   once(eventName: string, handler : Handler) {
@@ -24,14 +30,16 @@ export class EventEmitter {
     this.on(eventName, handler);
   }
 
-  emit(eventName : string, ...params : any []) {
-    if (!this.handlers[eventName]) return;
+  emit(eventName : string, ...params : any []) : any[] {
+    if (!this.handlers[eventName]) return [];
     const handlers = this.handlers[eventName];
+    const results = [];
     for (let i = 0; i < handlers.length; i++) {
       const handler = handlers[i];
-      handler.apply(null, params);
+      results.push(handler.apply(this, params));
     }
     this.handlers[eventName] = this.handlers[eventName].filter((handler) => !handler._once);
+    return results;
   }
 
   remove(eventName : string, handler: Handler) {

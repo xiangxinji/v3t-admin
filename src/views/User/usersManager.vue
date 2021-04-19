@@ -1,5 +1,7 @@
 <template>
   <div class="page users-manager">
+    <el-input v-model="crud.query.username"></el-input>
+    <el-input v-model="crud.query.phone"></el-input>
     <el-table
       :data="crud.data"
       style="width: 100%">
@@ -10,6 +12,7 @@
       <el-table-column label="操作">
         <template v-slot="scope">
           <el-button v-permission="['admin','add']" :key="scope.id">编辑</el-button>
+          <el-button @click="crud.delete(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -20,19 +23,17 @@
 import { defineComponent } from 'vue';
 import { useCrud } from '@/utils/crud';
 
-type User = {
-  userid : number
-  username : string
-  nickName : string
-  createTime : string
-}
-
+const query = {
+  username: '',
+  phone: '',
+};
 export default defineComponent({
   components: {
   },
   setup() {
     const crud = useCrud({
       url: '/user/query',
+      query,
     });
     return {
       crud,
