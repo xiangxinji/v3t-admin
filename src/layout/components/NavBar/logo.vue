@@ -1,8 +1,11 @@
 <template>
-  <div class="logo" :style="{ width: fold ? layoutStyles.LogoWidth : '50px'}">
+  <div class="logo" :style="{ width: fold ? layoutStyles.LogoWidth : '64px'}">
     <router-link class="router-link" to="/">
-      <h1>
+      <h1 v-if="fold" :style="{width :layoutStyles.LogoWidth , textAlign: 'center' }">
         {{  title  }}
+      </h1>
+      <h1 v-else>
+        V3T
       </h1>
     </router-link>
   </div>
@@ -28,5 +31,5 @@ export default defineComponent({
 
 <style lang="scss" scoped>
   h1{color:white;padding:0 8px}
-  .logo{height:100%;line-height:50px;transition:width .3s ease-in-out;}
+  .logo{height:100%;line-height:50px;transition:width .3s ease-in-out;background-color:#191a23;display:flex;justify-content:center;align-items:center;}
 </style>

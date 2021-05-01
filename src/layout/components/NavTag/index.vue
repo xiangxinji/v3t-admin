@@ -80,9 +80,6 @@ export default defineComponent({
 }
 .nav-tag{
   height: 40px;
-  background: #FFFFFF;
-  border: 1px solid #E2E2E2;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
   font-size:12px;
   color:#716F6F;
   display:flex;

@@ -51,8 +51,9 @@ export default defineComponent({
   color:white ;
   .logo-panel{height:100%;}
   .fold-panel{
-      .icon{font-size:18px;}padding:0 10px;
-      cursor:pointer
+    cursor:pointer;
+    .icon{font-size:18px;}padding:0 10px;
   }
+  .icon{color:#666;}
 }
 </style>

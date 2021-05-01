@@ -3,13 +3,21 @@ $body-font-size : 14px ;
 
 
 // layout
-$layout-header-height:50px;
-$layout-header-background :  #1E1E1E;
+$layout-header-height:63px;
+$layout-header-background : white;
 $layout-header-border: 1px solid #1E1E1E;
-$layout-aside-width : 170px;
+$layout-aside-width : 256px;
 $layout-header-logo-width :$layout-aside-width;
 $layout-logo-close-width : 65px;
 $layout-main-height: calc(100vh - #{$layout-header-height});
+
+
+$aside-background : #191a23 ;
+$aside-color : #515a6e ;
+$aside-hover-color : red ;
+$aside-active-background :#2d8cf0 ;
+$aside-active-color : #ffffff ;
+
 
 :export {
   layoutHeaderHeight : $layout-header-height ;
@@ -17,5 +25,11 @@ $layout-main-height: calc(100vh - #{$layout-header-height});
   layoutMainHeight : $layout-main-height ;
   layoutLogoWidth : $layout-header-logo-width;
   layoutLogoCloseWidth : $layout-logo-close-width;
+
+  asideBackground : $aside-background ;
+  asideColor : $aside-color ;
+  asideHoverColor : $aside-hover-color ;
+  asideActiveBackground : $aside-active-background ;
+  asideActiveColor : $aside-active-color ;
 }
 
