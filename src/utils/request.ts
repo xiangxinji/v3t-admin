@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { getToken } from '@/utils/token';
 
 const baseURL = process.env.VUE_APP_BASE_API;
