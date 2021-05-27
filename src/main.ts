@@ -9,6 +9,8 @@ import './assets/styles/base.scss';
 
 const AppElement = document.getElementById('app');
 
+console.log(App);
+
 setTimeout(() => {
   createApp(App).use(store).use(router).use(lazyUse)
     .use(directive)
