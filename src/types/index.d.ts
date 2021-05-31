@@ -38,5 +38,5 @@ declare type Pagination = {
 }
 
 declare module 'deepclone' {
-  export default any;
+  export default function (data : Array | Object):Array | Object;
 }

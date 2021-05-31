@@ -15,6 +15,7 @@ import {
   ElTable,
   ElTableColumn,
   ElMessageBox,
+  ElPagination,
 } from 'element-plus';
 
 export default {
@@ -34,6 +35,7 @@ export default {
     app.component(ElTable.name, ElTable);
     app.component(ElTableColumn.name, ElTableColumn);
     app.component(ElMessageBox.name, ElMessageBox);
+    app.component(ElPagination.name, ElPagination);
     return app;
   },
 };

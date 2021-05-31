@@ -1,7 +1,7 @@
 <template>
   <div class="page users-manager">
     <el-table
-      :data="[]"
+      :data="state.dataSource"
       style="width: 100%">
       <el-table-column prop="id" label="ID"> </el-table-column>
       <el-table-column prop="username" label="用户名"> </el-table-column>
@@ -14,21 +14,24 @@
         </template>
       </el-table-column>
     </el-table>
+    <pager v-model:data="state.pagination"  @change="crudRefresh"/>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useQuery } from '@/hooks/data';
+import pager from '@/components/pager/default.vue';
 
-const query = {
-  username: '',
-  phone: '',
-};
 export default defineComponent({
   components: {
+    pager,
   },
   setup() {
+    const [state, handlers] = useQuery({ url: '/user/query' });
     return {
+      state,
+      ...handlers,
     };
   },
 });

@@ -50,16 +50,40 @@ const routerConfig:Array<any> = [
     ],
   },
   {
-    path: '/user',
+    path: '/system',
     component: 'Layout',
     hidden: false,
+    meta: {
+      title: '系统管理',
+      icon: 'el-icon-help',
+    },
     children: [
       {
-        path: '/user/manager',
+        path: '/system/menus',
+        component: '/System/menus',
+        name: 'SystemMenus',
+        meta: {
+          title: '菜单管理',
+          keepAlive: true,
+          close: true,
+        },
+      },
+      {
+        path: '/system/roles',
+        component: '/System/roles',
+        name: 'SystemRoles',
+        meta: {
+          title: '角色管理',
+          keepAlive: true,
+          close: true,
+        },
+      },
+      {
+        path: '/system/users',
         component: '/User/usersManager',
         name: 'UserManager',
         meta: {
-          title: '用户管理', icon: 'el-icon-help', keepAlive: true, close: true,
+          title: '用户管理', keepAlive: true, close: true,
         },
       },
     ],
