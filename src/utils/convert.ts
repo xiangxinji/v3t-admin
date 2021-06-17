@@ -2,9 +2,14 @@
 import Layout from '@/layout/index.vue';
 import { BuildRouteConf, NormolizedMenuTree } from '@/types/system';
 
-function loadView(c : string) {
+function loadView(c : string, componentName ?: string) {
   return () => new Promise((resolve) => {
-    require([`@/views${c}.vue`], resolve);
+    require([`@/views${c}.vue`], (component) => {
+      if (componentName) {
+        component.default.name = componentName;
+      }
+      resolve(component);
+    });
   });
 }
 
@@ -16,7 +21,7 @@ function _convertRouterConfig(route : BuildRouteConf) {
     if (route.component.toLowerCase() === 'layout') route.component = Layout;
     else {
       const c = route.component;
-      route.component = loadView(c);
+      route.component = loadView(c, route?.name);
     }
   }
   if (route.children && Array.isArray(route.children)) route.children.forEach((r : any) => _convertRouterConfig(r));

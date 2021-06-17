@@ -12,6 +12,7 @@ export type BuildRouteConf = {
   hidden?: boolean,
   redirect?:string,
   meta ?: MetaType,
+  name ?: string,
   children ?: Array<BuildRouteConf>
 }
 

@@ -1,6 +1,6 @@
 module.exports = {
   // 应用名称
-  appTitle : 'V3T manager',
+  appTitle : 'V3T manager1',
   // 路由白名单
   routerWhiteList : [] ,
   // token 存储的 key

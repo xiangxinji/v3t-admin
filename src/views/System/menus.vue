@@ -1,13 +1,18 @@
 <template>
-  <div> menus </div>
+  <div> menus
+    <el-button @click="$router.push({ path : '/system/users/' + state.count ++ })"> 跳转</el-button>
+  </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, reactive } from 'vue';
 
 export default defineComponent({
   setup() {
-    return {};
+    const state = reactive({
+      count: 0,
+    });
+    return { state };
   },
 });
 </script>

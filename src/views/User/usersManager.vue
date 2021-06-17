@@ -1,8 +1,10 @@
 <template>
   <div class="page users-manager">
+    <el-input v-model="s.input"></el-input>
     <el-table
       :data="state.dataSource"
-      style="width: 100%">
+      style="width: 100%"
+    >
       <el-table-column prop="id" label="ID"> </el-table-column>
       <el-table-column prop="username" label="用户名"> </el-table-column>
       <el-table-column prop="nickName" label="名称"> </el-table-column>
@@ -19,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, reactive } from 'vue';
 import { useQuery } from '@/hooks/data';
 import pager from '@/components/pager/default.vue';
 
@@ -29,9 +31,13 @@ export default defineComponent({
   },
   setup() {
     const [state, handlers] = useQuery({ url: '/user/query' });
+    const s = reactive({
+      input: 1,
+    });
     return {
       state,
       ...handlers,
+      s,
     };
   },
 });
