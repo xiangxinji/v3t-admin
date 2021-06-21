@@ -11,7 +11,9 @@
 </template>
 
 <script lang="ts">
-import { reactive, defineComponent, watch } from 'vue';
+import {
+  reactive, defineComponent, watch, onMounted,
+} from 'vue';
 import variables from '@/assets/styles/_variables.scss';
 import { useStore } from 'vuex';
 import { useAsideBar } from '@/layout/components/AsideBar/utils';
@@ -45,6 +47,9 @@ export default defineComponent({
       state.defaultActive = route.path;
     });
     useAsideBar({ store, state });
+    onMounted(() => {
+      console.log(state.defaultActive);
+    });
     return {
       state,
       styles,

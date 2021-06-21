@@ -1,4 +1,7 @@
 import { App } from 'vue';
+import lang from 'element-plus/lib/locale/lang/zh-cn';
+import 'dayjs/locale/zh-cn';
+import locale from 'element-plus/lib/locale';
 import {
   ElButton,
   ElContainer,
@@ -38,4 +41,9 @@ export default {
     app.component(ElPagination.name, ElPagination);
     return app;
   },
+};
+
+locale.use(lang);
+export const config = {
+  size: 'small',
 };

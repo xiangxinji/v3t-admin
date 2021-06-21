@@ -6,7 +6,7 @@
     </template>
     <aside-bar-item v-for="(child , ind ) in config.children" :config="child" :key="index + '-' + ind " :index="child.target"/>
   </el-submenu>
-  <el-menu-item v-else :index="config.outLink ? undefined : config.target" @click="handleOpenOutLink(config)">
+  <el-menu-item v-else :index="!config.outLink ? config.target : null" @click="handleOpenOutLink(config)">
     <i :class="config.icon"></i>
     <template #title>
       <span>{{  config.title  }}</span>

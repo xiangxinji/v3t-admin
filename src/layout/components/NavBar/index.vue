@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, watchEffect } from 'vue';
+import { defineComponent, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { getBreadcrumbs } from '@/layout/utils';
 import Logo from './logo.vue';
@@ -32,6 +32,9 @@ export default defineComponent({
   },
   setup() {
     const route = useRoute();
+    watch(() => route.path, () => {
+      console.log(route.path);
+    });
     const breadcrumbs = computed(() => getBreadcrumbs(route));
     console.log(breadcrumbs);
     return {

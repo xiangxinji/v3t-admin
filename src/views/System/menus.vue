@@ -1,6 +1,5 @@
 <template>
   <div> menus
-    <el-button @click="$router.push({ path : '/system/users/' + state.count ++ })"> 跳转</el-button>
   </div>
 </template>
 

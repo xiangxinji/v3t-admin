@@ -79,7 +79,7 @@ const routerConfig:Array<any> = [
         },
       },
       {
-        path: '/system/users/:userid',
+        path: '/system/users',
         component: '/User/usersManager',
         name: 'UserManager',
         meta: {
